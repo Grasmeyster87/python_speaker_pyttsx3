@@ -17,7 +17,7 @@ def speak_text():
         return
     
     def run_speech():
-        engine = pyttsx3.init()  # новый движок каждый раз
+        engine = pyttsx3.init()
         engine.setProperty("rate", int(rate_scale.get()))
         engine.setProperty("volume", 0.9)
 
@@ -32,9 +32,7 @@ def speak_text():
     threading.Thread(target=run_speech, daemon=True).start()
 
 def pause_playback():
-    # пауза = остановка, возобновить нельзя
-    # поэтому просто ничего не делаем, если движок пересоздаётся каждый раз
-    pass
+    pass  # пока пауза не реализуется
 
 def reset_engine():
     voice_combo["values"] = [voice.name for voice in voices]
@@ -72,7 +70,8 @@ def save_audio():
 root = tk.Tk()
 root.title("Text-to-Speech")
 
-text_box = tk.Text(root, width=60, height=10, wrap="word")
+# Примерный размер для А5 (ширина/высота в символах и строках)
+text_box = tk.Text(root, width=60, height=25, wrap="word")
 text_box.pack(pady=10)
 
 voice_combo = ttk.Combobox(root, values=[voice.name for voice in voices], state="readonly")
@@ -85,14 +84,18 @@ rate_scale = ttk.Scale(root, from_=100, to=250, orient="horizontal")
 rate_scale.set(150)
 rate_scale.pack(pady=10)
 
-btn_speak = tk.Button(root, text="Воспроизвести", command=speak_text)
-btn_speak.pack(pady=5)
+# Панель для кнопок в одной строке
+button_frame = tk.Frame(root)
+button_frame.pack(pady=5)
 
-btn_pause = tk.Button(root, text="Пауза (остановка)", command=pause_playback)
-btn_pause.pack(pady=5)
+btn_reset = tk.Button(button_frame, text="Сброс", command=reset_engine)
+btn_reset.pack(side="left", padx=5)
 
-btn_reset = tk.Button(root, text="Сброс", command=reset_engine)
-btn_reset.pack(pady=5)
+btn_speak = tk.Button(button_frame, text="Воспроизвести", command=speak_text)
+btn_speak.pack(side="left", padx=5)
+
+btn_pause = tk.Button(button_frame, text="Пауза", command=pause_playback)
+btn_pause.pack(side="left", padx=5)
 
 btn_save = tk.Button(root, text="Сохранить в аудиофайл", command=save_audio)
 btn_save.pack(pady=10)
