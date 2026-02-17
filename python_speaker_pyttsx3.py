@@ -2,14 +2,14 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 import pyttsx3
 
-voices = pyttsx3.init().getProperty("voices")
+# глобальный движок
+engine = pyttsx3.init()
+voices = engine.getProperty("voices")
 
 def get_selected_or_all_text():
     try:
-        # пробуем получить выделенный текст
         return text_box.selection_get().strip()
     except tk.TclError:
-        # если ничего не выделено — берём весь текст
         return text_box.get("1.0", tk.END).strip()
 
 def speak_text():
@@ -17,7 +17,6 @@ def speak_text():
     if not text:
         return
     
-    engine = pyttsx3.init()
     engine.setProperty("rate", int(rate_scale.get()))
     engine.setProperty("volume", 0.9)
 
@@ -27,7 +26,19 @@ def speak_text():
 
     engine.say(text)
     engine.runAndWait()
+
+def pause_playback():
+    # фактически это остановка
     engine.stop()
+
+def reset_engine():
+    global engine, voices
+    engine.stop()
+    engine = pyttsx3.init()  # пересоздаём движок
+    voices = engine.getProperty("voices")
+    voice_combo["values"] = [voice.name for voice in voices]
+    voice_combo.current(0)
+    rate_scale.set(150)
 
 def save_audio():
     text = get_selected_or_all_text()
@@ -41,7 +52,6 @@ def save_audio():
     if not filename:
         return
 
-    engine = pyttsx3.init()
     engine.setProperty("rate", int(rate_scale.get()))
     engine.setProperty("volume", 0.9)
 
@@ -51,7 +61,6 @@ def save_audio():
 
     engine.save_to_file(text, filename)
     engine.runAndWait()
-    engine.stop()
 
 # GUI
 root = tk.Tk()
@@ -71,7 +80,13 @@ rate_scale.set(150)
 rate_scale.pack(pady=10)
 
 btn_speak = tk.Button(root, text="Воспроизвести", command=speak_text)
-btn_speak.pack(pady=10)
+btn_speak.pack(pady=5)
+
+btn_pause = tk.Button(root, text="Пауза (остановка)", command=pause_playback)
+btn_pause.pack(pady=5)
+
+btn_reset = tk.Button(root, text="Сброс", command=reset_engine)
+btn_reset.pack(pady=5)
 
 btn_save = tk.Button(root, text="Сохранить в аудиофайл", command=save_audio)
 btn_save.pack(pady=10)
