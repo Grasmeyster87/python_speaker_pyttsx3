@@ -5,13 +5,12 @@ import pyttsx3
 voices = pyttsx3.init().getProperty("voices")
 
 def speak_text():
-    text = entry.get()
-    if not text.strip():
+    text = text_box.get("1.0", tk.END).strip()
+    if not text:
         return
     
-    # каждый раз создаём новый движок
     engine = pyttsx3.init()
-    engine.setProperty("rate", 150)
+    engine.setProperty("rate", int(rate_scale.get()))  # скорость
     engine.setProperty("volume", 0.9)
 
     selected_index = voice_combo.current()
@@ -20,19 +19,29 @@ def speak_text():
 
     engine.say(text)
     engine.runAndWait()
-    engine.stop()  # очищаем очередь
+    engine.stop()
 
 # GUI
 root = tk.Tk()
 root.title("Text-to-Speech")
 
-entry = tk.Entry(root, width=50)
-entry.pack(pady=10)
+# Многострочное поле ввода
+text_box = tk.Text(root, width=60, height=10, wrap="word")
+text_box.pack(pady=10)
 
+# Выбор голоса
 voice_combo = ttk.Combobox(root, values=[voice.name for voice in voices], state="readonly")
 voice_combo.current(0)
 voice_combo.pack(pady=10)
 
+# Ползунок для скорости
+rate_label = tk.Label(root, text="Скорость речи")
+rate_label.pack()
+rate_scale = ttk.Scale(root, from_=100, to=250, orient="horizontal")
+rate_scale.set(150)  # значение по умолчанию
+rate_scale.pack(pady=10)
+
+# Кнопка воспроизведения
 btn = tk.Button(root, text="Воспроизвести", command=speak_text)
 btn.pack(pady=10)
 
