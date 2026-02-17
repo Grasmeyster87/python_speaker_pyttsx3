@@ -4,8 +4,16 @@ import pyttsx3
 
 voices = pyttsx3.init().getProperty("voices")
 
+def get_selected_or_all_text():
+    try:
+        # пробуем получить выделенный текст
+        return text_box.selection_get().strip()
+    except tk.TclError:
+        # если ничего не выделено — берём весь текст
+        return text_box.get("1.0", tk.END).strip()
+
 def speak_text():
-    text = text_box.get("1.0", tk.END).strip()
+    text = get_selected_or_all_text()
     if not text:
         return
     
@@ -22,11 +30,10 @@ def speak_text():
     engine.stop()
 
 def save_audio():
-    text = text_box.get("1.0", tk.END).strip()
+    text = get_selected_or_all_text()
     if not text:
         return
     
-    # диалог выбора файла
     filename = filedialog.asksaveasfilename(
         defaultextension=".mp3",
         filetypes=[("MP3 files", "*.mp3"), ("WAV files", "*.wav")]
@@ -42,7 +49,6 @@ def save_audio():
     if selected_index >= 0:
         engine.setProperty("voice", voices[selected_index].id)
 
-    # сохраняем в файл
     engine.save_to_file(text, filename)
     engine.runAndWait()
     engine.stop()
