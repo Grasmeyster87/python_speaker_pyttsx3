@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
 import pyttsx3
+import threading
 
-# глобальный движок
-engine = pyttsx3.init()
-voices = engine.getProperty("voices")
+voices = pyttsx3.init().getProperty("voices")
 
 def get_selected_or_all_text():
     try:
@@ -17,25 +16,27 @@ def speak_text():
     if not text:
         return
     
-    engine.setProperty("rate", int(rate_scale.get()))
-    engine.setProperty("volume", 0.9)
+    def run_speech():
+        engine = pyttsx3.init()  # новый движок каждый раз
+        engine.setProperty("rate", int(rate_scale.get()))
+        engine.setProperty("volume", 0.9)
 
-    selected_index = voice_combo.current()
-    if selected_index >= 0:
-        engine.setProperty("voice", voices[selected_index].id)
+        selected_index = voice_combo.current()
+        if selected_index >= 0:
+            engine.setProperty("voice", voices[selected_index].id)
 
-    engine.say(text)
-    engine.runAndWait()
+        engine.say(text)
+        engine.runAndWait()
+        engine.stop()
+
+    threading.Thread(target=run_speech, daemon=True).start()
 
 def pause_playback():
-    # фактически это остановка
-    engine.stop()
+    # пауза = остановка, возобновить нельзя
+    # поэтому просто ничего не делаем, если движок пересоздаётся каждый раз
+    pass
 
 def reset_engine():
-    global engine, voices
-    engine.stop()
-    engine = pyttsx3.init()  # пересоздаём движок
-    voices = engine.getProperty("voices")
     voice_combo["values"] = [voice.name for voice in voices]
     voice_combo.current(0)
     rate_scale.set(150)
@@ -52,15 +53,20 @@ def save_audio():
     if not filename:
         return
 
-    engine.setProperty("rate", int(rate_scale.get()))
-    engine.setProperty("volume", 0.9)
+    def run_save():
+        engine = pyttsx3.init()
+        engine.setProperty("rate", int(rate_scale.get()))
+        engine.setProperty("volume", 0.9)
 
-    selected_index = voice_combo.current()
-    if selected_index >= 0:
-        engine.setProperty("voice", voices[selected_index].id)
+        selected_index = voice_combo.current()
+        if selected_index >= 0:
+            engine.setProperty("voice", voices[selected_index].id)
 
-    engine.save_to_file(text, filename)
-    engine.runAndWait()
+        engine.save_to_file(text, filename)
+        engine.runAndWait()
+        engine.stop()
+
+    threading.Thread(target=run_save, daemon=True).start()
 
 # GUI
 root = tk.Tk()
