@@ -7,22 +7,21 @@ temp_engine = pyttsx3.init()
 voices = temp_engine.getProperty("voices")
 del temp_engine
 
-# Змінна для зберігання активного двигуна (щоб ми могли його зупинити)
+# Змінна для зберігання активного двигуна
 current_engine = None
 
-def speak_text(text, rate, voice_index):
+def speak_text(text, rate, voice_index, on_word_callback=None):
     if not text:
         return
 
-    # Зупиняємо попередній голос, якщо він ще звучить
+    # Зупиняємо попередній голос
     stop_speech()
 
     def run_speech():
         global current_engine
         try:
-            # Створюємо НОВИЙ двигун для кожного запуску (це вирішує проблему зависання)
             engine = pyttsx3.init()
-            current_engine = engine # Запам'ятовуємо його, щоб працювала Пауза
+            current_engine = engine
 
             # Налаштування
             engine.setProperty("rate", rate)
@@ -30,6 +29,11 @@ def speak_text(text, rate, voice_index):
 
             if voice_index >= 0:
                 engine.setProperty("voice", voices[voice_index].id)
+
+            # --- ПІДКЛЮЧЕННЯ ПІДСВІЧУВАННЯ ---
+            # Якщо передано функцію callback, підключаємо її до події 'started-word'
+            if on_word_callback:
+                engine.connect('started-word', on_word_callback)
 
             engine.say(text)
             engine.runAndWait()
@@ -56,7 +60,6 @@ def save_audio(text, rate, voice_index, filename):
     if not text or not filename:
         return
 
-    # Функція збереження працює окремо, тут теж створюємо свій екземпляр
     def run_save():
         save_engine = pyttsx3.init()
         save_engine.setProperty("rate", rate)
@@ -64,7 +67,7 @@ def save_audio(text, rate, voice_index, filename):
             save_engine.setProperty("voice", voices[voice_index].id)
         
         save_engine.save_to_file(text, filename)
-        save_engine.runAndWait() # Це важливо для запису файлу
+        save_engine.runAndWait()
         del save_engine
 
     threading.Thread(target=run_save, daemon=True).start()

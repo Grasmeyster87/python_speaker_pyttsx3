@@ -76,6 +76,8 @@ python_speaker_pyttsx3/
   Добавлена полоса прокрутки на текстовий блок
 - **1.1.1** — Corrected settings in the new version of the engine with pause and start
   Виправлені помилки в новому варіанті двигуна з паузою та запуском
+- **3.0.0** — Added the ability to highlight text during playback
+  Додано можливість підсвічування тексту під час відтворення
 ---
 
 ## ⚖️ License / Ліцензія  
