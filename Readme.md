@@ -73,7 +73,9 @@ python_speaker_pyttsx3/
 - **1.0.0** — Initial version  
   _Початкова версія_
 - **1.0.1** — added a scroll wheel to the text block
-  Добавлена колоса прокрутки на текстовий блок
+  Добавлена полоса прокрутки на текстовий блок
+- **1.1.1** — Corrected settings in the new version of the engine with pause and start
+  Виправлені помилки в новому варіанті двигуна з паузою та запуском
 ---
 
 ## ⚖️ License / Ліцензія  

@@ -7,7 +7,7 @@ class SpeakerGUI:
         self.root = root
         self.root.title("Text-to-Speech")
 
-        # Контейнер для тексту та скроллбара
+        # --- БЛОК ТЕКСТУ ТА СКРОЛЛУ ---
         text_frame = tk.Frame(root)
         text_frame.pack(pady=10, padx=10)
 
@@ -24,7 +24,7 @@ class SpeakerGUI:
         self.text_box.pack(side="left", fill="both", expand=True)
         self.scrollbar.config(command=self.text_box.yview)
 
-        # Вибір голосу
+        # --- НАЛАШТУВАННЯ ---
         self.voice_combo = ttk.Combobox(root, values=[v.name for v in speaker.get_voices()], state="readonly", width=50)
         if speaker.get_voices():
             self.voice_combo.current(0)
@@ -36,17 +36,17 @@ class SpeakerGUI:
         self.rate_scale.set(180)
         self.rate_scale.pack(pady=10, fill="x", padx=100)
 
-        # Панель кнопок
+        # --- КНОПКИ ---
         button_frame = tk.Frame(root)
         button_frame.pack(pady=5)
 
-        self.btn_reset = tk.Button(button_frame, text="Скинути", command=self.reset_engine)
+        # Змінено: Скинути (тільки налаштування)
+        self.btn_reset = tk.Button(button_frame, text="Скинути налаштування", command=self.reset_engine)
         self.btn_reset.pack(side="left", padx=5)
 
         self.btn_speak = tk.Button(button_frame, text="Відтворити", command=self.speak_text, bg="#e1f5fe")
         self.btn_speak.pack(side="left", padx=5)
 
-        # НОВА КНОПКА ПАУЗИ (ЗУПИНКИ)
         self.btn_pause = tk.Button(button_frame, text="Пауза", command=self.pause_playback, bg="#ffebee")
         self.btn_pause.pack(side="left", padx=5)
 
@@ -63,16 +63,17 @@ class SpeakerGUI:
     def speak_text(self):
         text = self.get_text()
         if text:
+            # Примусово зупиняємо попереднє перед запуском нового
+            speaker.stop_speech()
             speaker.speak_text(text, int(self.rate_scale.get()), self.voice_combo.current())
 
     def pause_playback(self):
-        """Зупиняє поточне відтворення"""
         speaker.stop_speech()
 
     def reset_engine(self):
-        """Очищення поля та зупинка звуку"""
+        """Скидає налаштування швидкості та голосу, зупиняє звук, АЛЕ залишає текст"""
         speaker.stop_speech()
-        self.text_box.delete("1.0", tk.END)
+        # self.text_box.delete("1.0", tk.END)  <-- Цей рядок видалено, щоб текст не зникав
         self.rate_scale.set(180)
         if speaker.get_voices():
             self.voice_combo.current(0)
