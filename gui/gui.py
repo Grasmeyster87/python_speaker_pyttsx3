@@ -7,8 +7,14 @@ class SpeakerGUI:
         self.root = root
         self.root.title("Text-to-Speech")
 
-        self.text_box = tk.Text(root, width=60, height=25, wrap="word")
+        self.text_box = tk.Text(
+            root,
+            width=90,   # ширина (символи)
+            height=30,  # висота (рядки)
+            wrap="word"
+            )
         self.text_box.pack(pady=10)
+
 
         self.voice_combo = ttk.Combobox(root, values=[v.name for v in speaker.get_voices()], state="readonly")
         self.voice_combo.current(0)
