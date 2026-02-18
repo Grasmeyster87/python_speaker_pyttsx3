@@ -2,35 +2,38 @@ Here’s a bilingual English/Ukrainian version of your README, formatted cleanly
 
 ---
 
-# 🎙️ python_speaker_pyttsx3  
+# 🎙️ python_speaker_pyttsx3
 
 **Playing back text with voices built into the system**  
 **Відтворення тексту голосами, вбудованими в систему**
 
 ---
 
-## 📖 Description / Опис  
+## 📖 Description / Опис
+
 This project uses the **pyttsx3** library to convert text into speech.  
-Цей проєкт використовує бібліотеку **pyttsx3** для перетворення тексту на мовлення.  
+Цей проєкт використовує бібліотеку **pyttsx3** для перетворення тексту на мовлення.
 
 The program has a graphical interface built with **Tkinter**, allowing you to:  
-Програма має графічний інтерфейс на **Tkinter**, що дозволяє:  
+Програма має графічний інтерфейс на **Tkinter**, що дозволяє:
+
 - Enter or paste text into an A5-format window  
-  Вводити або вставляти текст у вікно формату A5  
+  Вводити або вставляти текст у вікно формату A5
 - Select a voice from available system voices  
-  Обирати голос із доступних системних  
+  Обирати голос із доступних системних
 - Adjust speech rate  
-  Налаштовувати швидкість мовлення  
+  Налаштовувати швидкість мовлення
 - Play back text  
-  Відтворювати текст  
+  Відтворювати текст
 - Save speech to an audio file (MP3/WAV)  
-  Зберігати мовлення в аудіофайл (MP3/WAV)  
+  Зберігати мовлення в аудіофайл (MP3/WAV)
 - Reset settings  
-  Скидати налаштування  
+  Скидати налаштування
 
 ---
 
-## 🚀 Installation / Установка  
+## 🚀 Installation / Установка
+
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/python_speaker_pyttsx3.git
@@ -40,21 +43,24 @@ cd python_speaker_pyttsx3
 pip install -r requirements.txt
 ```
 
-**requirements.txt**:  
+**requirements.txt**:
+
 ```
 pyttsx3
 ```
 
 ---
 
-## ▶️ Run / Запуск  
+## ▶️ Run / Запуск
+
 ```bash
 python main.py
 ```
 
 ---
 
-## 📂 Project structure / Структура проєкту  
+## 📂 Project structure / Структура проєкту
+
 ```
 python_speaker_pyttsx3/
 │
@@ -69,7 +75,8 @@ python_speaker_pyttsx3/
 
 ---
 
-## 📝 Versions / Версії  
+## 📝 Versions / Версії
+
 - **1.0.0** — Initial version  
   _Початкова версія_
 - **1.0.1** — added a scroll wheel to the text block
@@ -78,10 +85,13 @@ python_speaker_pyttsx3/
   Виправлені помилки в новому варіанті двигуна з паузою та запуском
 - **3.0.0** — Added the ability to highlight text during playback
   Додано можливість підсвічування тексту під час відтворення
+- **3.1.0** — Added the ability to create a Windows application
+  Додана можливість створення виндовс додатка
 ---
 
-## ⚖️ License / Ліцензія  
+## ⚖️ License / Ліцензія
+
 MIT License — free use and modification.  
-MIT License — вільне використання та модифікація.  
+MIT License — вільне використання та модифікація.
 
 ---

@@ -1,2 +1,28 @@
+# Віртуальне середовище (Ви це вже додали)
 venv/
+ENV/
+env/
+
+# Python кеш та байт-код
 __pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller (Артефакти збірки .exe)
+build/
+dist/
+*.spec
+
+# IDE / Редактори (VS Code, PyCharm)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Системні файли (щоб не смітити в репозиторії)
+.DS_Store
+Thumbs.db
+
+# Логи та тимчасові файли
+*.log
+tmp/
